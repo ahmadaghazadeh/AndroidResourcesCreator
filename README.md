@@ -1,0 +1,2 @@
+# AndroidResourcesCreator
+Android Resources Creator
