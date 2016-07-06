@@ -1,0 +1,9 @@
+D:\WorkSpace\Dot Net\C#\AndroidResourcesCreator\AndroidResourcesCreator\bin\Debug\AndroidResourcesCreator.exe.config
+D:\WorkSpace\Dot Net\C#\AndroidResourcesCreator\AndroidResourcesCreator\bin\Debug\AndroidResourcesCreator.exe
+D:\WorkSpace\Dot Net\C#\AndroidResourcesCreator\AndroidResourcesCreator\bin\Debug\AndroidResourcesCreator.pdb
+D:\WorkSpace\Dot Net\C#\AndroidResourcesCreator\AndroidResourcesCreator\obj\Debug\AndroidResourcesCreator.csprojResolveAssemblyReference.cache
+D:\WorkSpace\Dot Net\C#\AndroidResourcesCreator\AndroidResourcesCreator\obj\Debug\AndroidResourcesCreator.Form1.resources
+D:\WorkSpace\Dot Net\C#\AndroidResourcesCreator\AndroidResourcesCreator\obj\Debug\AndroidResourcesCreator.Properties.Resources.resources
+D:\WorkSpace\Dot Net\C#\AndroidResourcesCreator\AndroidResourcesCreator\obj\Debug\AndroidResourcesCreator.csproj.GenerateResource.Cache
+D:\WorkSpace\Dot Net\C#\AndroidResourcesCreator\AndroidResourcesCreator\obj\Debug\AndroidResourcesCreator.exe
+D:\WorkSpace\Dot Net\C#\AndroidResourcesCreator\AndroidResourcesCreator\obj\Debug\AndroidResourcesCreator.pdb
