@@ -41,6 +41,15 @@ namespace AndroidResourcesCreator
              new ImageSize (1152  , 648  ,"drawable-xxhdpi")
         });
 
+        static readonly IList<ImageSize> IconSizes = new ReadOnlyCollection<ImageSize>
+       (new[] {
+             new ImageSize (48   , 48 ,"drawable-mdpi"),
+             new ImageSize (72   , 72 ,"drawable-hdpi"),
+             new ImageSize (96   , 96 ,"drawable-xhdpi"),
+             new ImageSize (144  , 144  ,"drawable-xxhdpi"),
+             new ImageSize (192  , 192  ,"drawable-xxxhdpi")
+       });
+
 
         public Form1()
         {
@@ -54,13 +63,13 @@ namespace AndroidResourcesCreator
             progressBar1.Maximum = DrawerSizes.Count-1;
             for (var i = 0; i < DrawerSizes.Count; i++)
             {
-                saveImage(DrawerSizes[i], fileName);
+                saveImage(DrawerSizes[i], fileName,true, ImageFormat.Jpeg);
                 progressBar1.Value = i;
             }
 
         }
 
-        private void saveImage(ImageSize imageSize,string path)
+        private void saveImage(ImageSize imageSize,string path,Boolean isResizeFixedWith, ImageFormat imageFormat)
         {
 
             var currentPath = Path.GetDirectoryName(path) + "/" + imageSize.FolderName;
@@ -68,21 +77,22 @@ namespace AndroidResourcesCreator
             var fileName = currentPath  +"/" + Path.GetFileNameWithoutExtension(path);
             var ms = new MemoryStream(File.ReadAllBytes(path)); 
             var image = Image.FromStream(ms);
-            var fixSize = ResizeImageFixedWidth(image, imageSize);
-            fixSize.Save(fileName+".jpg", ImageFormat.Jpeg);
+            if (isResizeFixedWith)
+            {
+                var fixSize = ResizeImageFixedWidth(image, imageSize);
+                fixSize.Save(fileName + ".jpg", imageFormat);
+            }
+            else
+            {
+                 ResizeImage(image, imageSize).Save(fileName + ".png", imageFormat);
+            }
+            
 
         }
 
         private Image ResizeImageFixedWidth(Image imgToResize, ImageSize imageSize)
         {
-            var sourceWidth = imgToResize.Width;
-            var sourceHeight = imgToResize.Height;
-
-            var nPercent = ((float)imageSize.Width / (float)sourceWidth);
-
-            var destWidth = (int)(sourceWidth * nPercent);
-            var destHeight = (int)(sourceHeight * nPercent);
-
+           
             var b = new Bitmap(imageSize.Width, imageSize.Height);
         
             using (Graphics gr = Graphics.FromImage((Image)b))
@@ -95,8 +105,20 @@ namespace AndroidResourcesCreator
             return (Image)b;
         }
 
+        private Image ResizeImage(Image imgToResize, ImageSize imageSize)
+        {
+            var b = new Bitmap(imageSize.Width, imageSize.Height);
 
-       
+            using (Graphics gr = Graphics.FromImage((Image)b))
+            {
+                gr.SmoothingMode = SmoothingMode.HighSpeed;
+                gr.InterpolationMode = InterpolationMode.Low;
+                gr.PixelOffsetMode = PixelOffsetMode.HighSpeed;
+                gr.DrawImage(imgToResize, new Rectangle(0, 0, imageSize.Width, imageSize.Height));
+            }
+            return (Image)b;
+        }
+
 
         private string getImagePath()
         {
@@ -123,6 +145,23 @@ namespace AndroidResourcesCreator
 
             }
             return null;
+        }
+
+        private void Form1_Load(object sender, EventArgs e)
+        {
+
+        }
+
+        private void button1_Click(object sender, EventArgs e)
+        {
+            var fileName = getImagePath();
+            progressBar1.Value = 0;
+            progressBar1.Maximum = IconSizes.Count - 1;
+            for (var i = 0; i < IconSizes.Count; i++)
+            {
+                saveImage(IconSizes[i], fileName,false, ImageFormat.Png);
+                progressBar1.Value = i;
+            }
         }
     }
 }
