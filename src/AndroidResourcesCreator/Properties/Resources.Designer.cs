@@ -86,5 +86,14 @@ namespace AndroidResourcesCreator.Properties {
                 return ResourceManager.GetString("Open_Images_File", resourceCulture);
             }
         }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to  Compression-Count : .
+        /// </summary>
+        internal static string TinyPng_TinyPng_Load__Compression_Count___ {
+            get {
+                return ResourceManager.GetString("TinyPng_TinyPng_Load__Compression_Count___", resourceCulture);
+            }
+        }
     }
 }

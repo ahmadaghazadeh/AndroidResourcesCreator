@@ -15,3 +15,7 @@ D:\WorkSpace\Dot Net\C#\AndroidResourcesCreator\src\AndroidResourcesCreator\bin\
 D:\WorkSpace\Dot Net\C#\AndroidResourcesCreator\src\AndroidResourcesCreator\obj\Debug\AndroidResourcesCreator.Form1.resources
 D:\WorkSpace\Dot Net\C#\AndroidResourcesCreator\src\AndroidResourcesCreator\obj\Debug\AndroidResourcesCreator.Properties.Resources.resources
 D:\WorkSpace\Dot Net\C#\AndroidResourcesCreator\src\AndroidResourcesCreator\obj\Debug\AndroidResourcesCreator.csproj.GenerateResource.Cache
+D:\WorkSpace\Dot Net\C#\AndroidResourcesCreator\src\AndroidResourcesCreator\obj\Debug\AndroidResourcesCreator.csprojResolveAssemblyReference.cache
+D:\WorkSpace\Dot Net\C#\AndroidResourcesCreator\src\AndroidResourcesCreator\obj\Debug\AndroidResourcesCreator.TinyPng.resources
+D:\WorkSpace\Dot Net\C#\AndroidResourcesCreator\src\AndroidResourcesCreator\bin\Debug\Newtonsoft.Json.dll
+D:\WorkSpace\Dot Net\C#\AndroidResourcesCreator\src\AndroidResourcesCreator\bin\Debug\Newtonsoft.Json.xml

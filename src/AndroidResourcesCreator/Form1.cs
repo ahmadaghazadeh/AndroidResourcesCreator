@@ -8,6 +8,7 @@ using System.Drawing.Drawing2D;
 using System.Drawing.Imaging;
 using System.IO;
 using System.Linq;
+using System.Net;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
@@ -17,7 +18,9 @@ namespace AndroidResourcesCreator
 {
     public partial class Form1 : Form
     {
-        struct ImageSize
+          DataTable dbApi;
+          
+        public struct ImageSize
         {
             private readonly int width;
             private readonly int height;
@@ -53,12 +56,13 @@ namespace AndroidResourcesCreator
 
         public Form1()
         {
+             
             InitializeComponent();
         }
 
         private void button2_Click(object sender, EventArgs e)
         {
-            var fileName = getImagePath();
+            var fileName = Project.getImagePath();
             progressBar1.Value = 0;
             progressBar1.Maximum = DrawerSizes.Count-1;
             for (var i = 0; i < DrawerSizes.Count; i++)
@@ -84,10 +88,27 @@ namespace AndroidResourcesCreator
             }
             else
             {
-                 ResizeImage(image, imageSize).Save(fileName + ".png", imageFormat);
+                var qualityParam1 = new EncoderParameter(System.Drawing.Imaging.Encoder.Quality, 100L);
+                EncoderParameters encoderParams = new EncoderParameters(1);
+                ImageCodecInfo jpegCodec = GetEncoderInfo("image/"+imageFormat.ToString().ToLower());
+                encoderParams.Param[0] = qualityParam1;
+                ResizeImage(image, imageSize).Save(fileName + ".png", jpegCodec, encoderParams);
+                Project.CompressTinyPng(fileName + ".png",dbApi);
             }
             
 
+        }
+        private static ImageCodecInfo GetEncoderInfo(string mimeType)
+        {
+            // Get image codecs for all image formats 
+            ImageCodecInfo[] codecs = ImageCodecInfo.GetImageEncoders();
+
+            // Find the correct image codec 
+            for (int i = 0; i < codecs.Length; i++)
+                if (codecs[i].MimeType == mimeType)
+                    return codecs[i];
+
+            return null;
         }
 
         private Image ResizeImageFixedWidth(Image imgToResize, ImageSize imageSize)
@@ -108,53 +129,31 @@ namespace AndroidResourcesCreator
         private Image ResizeImage(Image imgToResize, ImageSize imageSize)
         {
             var b = new Bitmap(imageSize.Width, imageSize.Height);
-
+             
+           
             using (Graphics gr = Graphics.FromImage((Image)b))
             {
-                gr.SmoothingMode = SmoothingMode.HighSpeed;
-                gr.InterpolationMode = InterpolationMode.Low;
-                gr.PixelOffsetMode = PixelOffsetMode.HighSpeed;
+                gr.SmoothingMode = SmoothingMode.HighQuality;
+                gr.InterpolationMode = InterpolationMode.Bicubic;
+                gr.PixelOffsetMode = PixelOffsetMode.HighQuality;
                 gr.DrawImage(imgToResize, new Rectangle(0, 0, imageSize.Width, imageSize.Height));
             }
             return (Image)b;
         }
 
 
-        private string getImagePath()
-        {
-            var theDialog = new OpenFileDialog
-            {
-                Title = Resources.Open_Images_File,
-                Filter = Resources.Click_All_files
-            };
-            var lastPath = (string)Settings.Default["lastPath"];
-            theDialog.InitialDirectory = lastPath;
-            if (theDialog.ShowDialog() != DialogResult.OK) return null;
-            var directoryPath = Path.GetDirectoryName(theDialog.FileName);
-            Settings.Default["lastPath"] = directoryPath;
-            Settings.Default.Save();
-            try
-            {
-                    
-                return theDialog.FileName ;
-            }
-            catch (Exception ex)
-            {
-                MessageBox.Show(Resources.
-                    Click_Error + ex.Message);
-
-            }
-            return null;
-        }
+       
 
         private void Form1_Load(object sender, EventArgs e)
         {
-
+            dbApi = Project.ReadCSV(Directory.GetCurrentDirectory() + "/TinyApiKey.csv");
+            dataGridView1.DataSource = dbApi;
+          
         }
 
         private void button1_Click(object sender, EventArgs e)
         {
-            var fileName = getImagePath();
+            var fileName = Project.getImagePath();
             progressBar1.Value = 0;
             progressBar1.Maximum = IconSizes.Count - 1;
             for (var i = 0; i < IconSizes.Count; i++)
@@ -163,5 +162,27 @@ namespace AndroidResourcesCreator
                 progressBar1.Value = i;
             }
         }
+
+        private void trackBar1_Scroll(object sender, EventArgs e)
+        {
+            label1.Text = trackBar1.Value.ToString();
+        }
+
+        private void button3_Click(object sender, EventArgs e)
+        {
+            var fileName = Project.getImagePath();
+            progressBar1.Value = 0;
+            progressBar1.Maximum = IconSizes.Count - 1;
+            for (var i = 0; i < IconSizes.Count; i++)
+            {
+                saveImage(IconSizes[i], fileName, false, ImageFormat.Png);
+                progressBar1.Value = i;
+            }
+        }
+
+       
+
+        
     }
+
 }
